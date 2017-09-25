@@ -31,9 +31,9 @@ get-set-forall /sys/devices/soc.0/qcom,bcl.*/mode enable
 # /sys/. These files receive the default label "sysfs".
 restorecon -R /sys/devices/system/cpu
 
-# ensure at most one A57 is online when thermal hotplug is disabled
+# ensure at least two A57 are online when thermal hotplug is disabled
 write /sys/devices/system/cpu/cpu4/online 1
-write /sys/devices/system/cpu/cpu5/online 0
+write /sys/devices/system/cpu/cpu5/online 1
 write /sys/devices/system/cpu/cpu6/online 0
 write /sys/devices/system/cpu/cpu7/online 0
 
@@ -86,7 +86,6 @@ write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 384000
 copy /sys/devices/system/cpu/cpu4/cpufreq/cpuinfo_max_freq /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
 
 # plugin remaining A57s
-write /sys/devices/system/cpu/cpu5/online 1
 write /sys/devices/system/cpu/cpu6/online 1
 write /sys/devices/system/cpu/cpu7/online 1
 
@@ -95,18 +94,18 @@ write /sys/module/msm_performance/parameters/cpu_max_freq "4:4294967295 5:429496
 
 # input boost configuration
 write /sys/module/cpu_boost/parameters/input_boost_freq "0:1344000"
-write /sys/module/cpu_boost/parameters/input_boost_ms 40
+write /sys/module/cpu_boost/parameters/input_boost_ms 200
 
 # Configure core_ctl module parameters
 write /sys/devices/system/cpu/cpu4/core_ctl/max_cpus 4
-write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 1
+write /sys/devices/system/cpu/cpu4/core_ctl/min_cpus 2
 write /sys/devices/system/cpu/cpu4/core_ctl/busy_up_thres 70
 write /sys/devices/system/cpu/cpu4/core_ctl/busy_down_thres 20
 write /sys/devices/system/cpu/cpu4/core_ctl/offline_delay_ms  100
 write /sys/devices/system/cpu/cpu4/core_ctl/task_thres 4
 write /sys/devices/system/cpu/cpu4/core_ctl/is_big_cluster 1
 write /sys/devices/system/cpu/cpu0/core_ctl/max_cpus 4
-write /sys/devices/system/cpu/cpu0/core_ctl/min_cpus 0
+write /sys/devices/system/cpu/cpu0/core_ctl/min_cpus 4
 write /sys/devices/system/cpu/cpu0/core_ctl/busy_up_thres 20
 write /sys/devices/system/cpu/cpu0/core_ctl/busy_down_thres 5
 write /sys/devices/system/cpu/cpu0/core_ctl/offline_delay_ms 5000
